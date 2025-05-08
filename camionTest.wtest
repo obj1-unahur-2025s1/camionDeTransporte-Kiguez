@@ -1,9 +1,114 @@
+import cosas.*
 import camion.*
 
 describe "group of test for camion" {
 
-  test "first test" {
-    assert.that(true)
+  test "el peso total del camion con la carg solicitada es de 2410" {
+    camion.cargarUnaCosa(bumblebee)
+    arenaGranel.peso(150)
+    camion.cargarUnaCosa(arenaGranel)
+    bateriaAntiarea.cambiarMisiles()
+    camion.cargarUnaCosa(bateriaAntiarea)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalaje.envolverOtraCosa(paqueteDeLadrillos)
+    camion.cargarUnaCosa(embalaje)
+    assert.equals(2410, camion.peso())
+  }
+
+  test "el peso de cada cosa del camion es un numero par" {
+    camion.cargarUnaCosa(bumblebee)
+    arenaGranel.peso(150)
+    camion.cargarUnaCosa(arenaGranel)
+    bateriaAntiarea.cambiarMisiles()
+    camion.cargarUnaCosa(bateriaAntiarea)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalaje.envolverOtraCosa(paqueteDeLadrillos)
+    camion.cargarUnaCosa(embalaje)
+    assert.that(camion.elPesoDeLasCargasEsPar())
+  }
+
+  test "hay alguna cosa que pese 800" {
+    camion.cargarUnaCosa(bumblebee)
+    arenaGranel.peso(150)
+    camion.cargarUnaCosa(arenaGranel)
+    bateriaAntiarea.cambiarMisiles()
+    camion.cargarUnaCosa(bateriaAntiarea)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalaje.envolverOtraCosa(paqueteDeLadrillos)
+    camion.cargarUnaCosa(embalaje)
+    assert.that(camion.hayCosaConPeso(800))
+  }
+
+  test "la primer cosa con 1 de peligro es la arena granel" {
+    camion.cargarUnaCosa(bumblebee)
+    arenaGranel.peso(150)
+    camion.cargarUnaCosa(arenaGranel)
+    bateriaAntiarea.cambiarMisiles()
+    camion.cargarUnaCosa(bateriaAntiarea)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalaje.envolverOtraCosa(paqueteDeLadrillos)
+    camion.cargarUnaCosa(embalaje)
+    assert.equals(arenaGranel, camion.primerCosaConPeligro(1))
+  }
+
+  test "las unicas 2 cosas que superan los 25 de peligro son bumblebee y la bateria antiaerea" {
+    camion.cargarUnaCosa(bumblebee)
+    arenaGranel.peso(150)
+    camion.cargarUnaCosa(arenaGranel)
+    bateriaAntiarea.cambiarMisiles()
+    camion.cargarUnaCosa(bateriaAntiarea)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalaje.envolverOtraCosa(paqueteDeLadrillos)
+    camion.cargarUnaCosa(embalaje)
+    assert.equals([bumblebee , bateriaAntiarea], camion.cosasQueSuperanNivelDePeligro(25))
+  }
+
+  test "las unicas 2 cosas que superan el peligro de knightRider son bumblebee y la bateria antiaerea" {
+    camion.cargarUnaCosa(bumblebee)
+    arenaGranel.peso(150)
+    camion.cargarUnaCosa(arenaGranel)
+    bateriaAntiarea.cambiarMisiles()
+    camion.cargarUnaCosa(bateriaAntiarea)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalaje.envolverOtraCosa(paqueteDeLadrillos)
+    camion.cargarUnaCosa(embalaje)
+    assert.equals([bumblebee , bateriaAntiarea], camion.cosasQueSuperanPeligrosidadDeCosa(knightRider))
+  }
+
+  test "el camion con la carga solicitada no esta excedido de peso" {
+    camion.cargarUnaCosa(bumblebee)
+    arenaGranel.peso(150)
+    camion.cargarUnaCosa(arenaGranel)
+    bateriaAntiarea.cambiarMisiles()
+    camion.cargarUnaCosa(bateriaAntiarea)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalaje.envolverOtraCosa(paqueteDeLadrillos)
+    camion.cargarUnaCosa(embalaje)
+    assert.notThat(camion.estaExcedidoDePeso())
+  }
+
+  test "el camion no puede circular por la ruta si el umbral de peligro tolerado es de 90 (por la bateria)" {
+    camion.cargarUnaCosa(bumblebee)
+    arenaGranel.peso(150)
+    camion.cargarUnaCosa(arenaGranel)
+    bateriaAntiarea.cambiarMisiles()
+    camion.cargarUnaCosa(bateriaAntiarea)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalaje.envolverOtraCosa(paqueteDeLadrillos)
+    camion.cargarUnaCosa(embalaje)
+    assert.notThat(camion.puedeCircularEnLaRutaConNivelDePeligro(90))
+  }
+
+  test "si el umbral de peligro tolerado es de 100 entonces si puede circular" {
+    camion.cargarUnaCosa(bumblebee)
+    arenaGranel.peso(150)
+    camion.cargarUnaCosa(arenaGranel)
+    bateriaAntiarea.cambiarMisiles()
+    camion.cargarUnaCosa(bateriaAntiarea)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalaje.envolverOtraCosa(paqueteDeLadrillos)
+    camion.cargarUnaCosa(embalaje)
+    assert.that(camion.puedeCircularEnLaRutaConNivelDePeligro(100))
   }
 
 }
