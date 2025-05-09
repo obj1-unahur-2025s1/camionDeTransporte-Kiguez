@@ -10,6 +10,7 @@ object camion {
     }
 
     method cargarUnaCosa(cosa) {
+        cosa.consecuenciaDeCarga()
         carga.add(cosa)
     }
 
@@ -61,5 +62,10 @@ object camion {
     method cosaMasPesada() {
         return
             carga.max({c=>c.peso()})
+    }
+
+    method totalDeBultos() {
+      return
+        carga.sum({c=>c.cantidadDeBultos()})
     }
 }

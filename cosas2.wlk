@@ -3,6 +3,10 @@ object knightRider {
     method peso() = 500
 
     method nivelDePeligro() = 10
+
+    method cantidadDeBultos() = 1
+
+    method consecuenciaDeCarga() {}
 }
 
 object bumblebee {
@@ -22,11 +26,19 @@ object bumblebee {
     method transformarse() {
         esUnRobot = not esUnRobot
     }
+
+    method cantidadDeBultos() = 2
+
+    method consecuenciaDeCarga() {
+        self.transformarse()
+    }
 }
 
 object paqueteDeLadrillos {
 
     var cantidadDeLadrillos = 1
+
+    method cantidadDeLadrillos() = cantidadDeLadrillos
 
     method peso() = cantidadDeLadrillos * 2
 
@@ -36,6 +48,11 @@ object paqueteDeLadrillos {
         cantidadDeLadrillos = cantidad
     }
 
+    method cantidadDeBultos() = if (cantidadDeLadrillos<101) 1 else if (cantidadDeLadrillos.between(101, 300)) 2 else 3
+
+    method consecuenciaDeCarga() {
+        cantidadDeLadrillos = cantidadDeLadrillos + 12
+    }
 }
 
 object arenaGranel {
@@ -50,6 +67,12 @@ object arenaGranel {
         peso= pesoNuevo
     }
 
+    method cantidadDeBultos() = 1
+
+    method consecuenciaDeCarga() {
+        peso = peso - 10
+    }
+
 }
 
 object bateriaAntiarea {
@@ -62,6 +85,12 @@ object bateriaAntiarea {
 
   method cambiarMisiles() {
     tieneMisiles = not tieneMisiles
+  }
+
+  method cantidadDeBultos() = if (tieneMisiles) 2 else 1
+
+  method consecuenciaDeCarga() {
+    self.cambiarMisiles()
   }
 }
 
@@ -85,6 +114,15 @@ object contenedor {
     method cargarCosa(cosa) {
         cosas.add(cosa)
     }
+
+    method cantidadDeBultos() {
+        return
+            1 + cosas.sum({c=>c.cantidadDeBultos()})
+    }
+
+    method consecuenciaDeCarga() {
+        cosas.forEach({c=>c.consecuenciaDeCarga()})
+    }
 }
 
 object residuos {
@@ -97,17 +135,27 @@ object residuos {
     method peso(pesoNuevo) {
         peso= pesoNuevo
     }
+
+    method cantidadDeBultos() = 1
+
+    method consecuenciaDeCarga() {
+        peso = peso + 15
+    }
 }
 
 object embalaje {
     var cosaEnvuelta = residuos
 
-    method peso() = cosaEnvuelta.peso()
+    method peso() = cosaEnvuelta.peso() 
 
     method nivelDePeligro() = cosaEnvuelta.nivelDePeligro() / 2
 
     method envolverOtraCosa(cosaNueva) {
         cosaEnvuelta = cosaNueva
     }
+
+    method cantidadDeBultos() = 2
+
+    method consecuenciaDeCarga() {}
 
 }

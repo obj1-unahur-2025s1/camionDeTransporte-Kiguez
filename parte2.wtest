@@ -1,0 +1,51 @@
+import camion2.*
+import cosas2.*
+
+test "toda la carga solicitada abarca un total de 7 bultos" {
+    camion.cargarUnaCosa(bumblebee)
+    arenaGranel.peso(150)
+    camion.cargarUnaCosa(arenaGranel)
+    camion.cargarUnaCosa(bateriaAntiarea)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalaje.envolverOtraCosa(paqueteDeLadrillos)
+    camion.cargarUnaCosa(embalaje)
+    assert.equals(7, camion.totalDeBultos())
+}
+
+test "el contenedor con toda la carga del camion abarca un total de 7 bultos(porque la bateria sube sin misiles)" {
+    contenedor.cargarCosa(bumblebee)
+    arenaGranel.peso(150)
+    contenedor.cargarCosa(arenaGranel)
+    contenedor.cargarCosa(bateriaAntiarea)
+    paqueteDeLadrillos.cantidadDeLadrillos(80)
+    embalaje.envolverOtraCosa(paqueteDeLadrillos)
+    contenedor.cargarCosa(embalaje)
+    assert.equals(7, contenedor.cantidadDeBultos())
+}
+
+test "el paquete de ladrillos tiene 150, por lo tanto abarca 2 bultos" {
+  paqueteDeLadrillos.cantidadDeLadrillos(150)
+  assert.equals(2, paqueteDeLadrillos.cantidadDeBultos())
+}
+
+test "bumblebee se transforma despues de subirse al contenedor y subir este ultimo al camion" {
+    contenedor.cargarCosa(bumblebee)
+    camion.cargarUnaCosa(contenedor)
+    assert.equals(15, bumblebee.nivelDePeligro())
+}
+
+test "el paquete tiene 13 ladrillos despues de subir al camion" {
+    camion.cargarUnaCosa(paqueteDeLadrillos)
+    assert.equals(13, paqueteDeLadrillos.cantidadDeLadrillos())
+}
+
+test "la arena pierde 10 kilos al subir al camion" {
+  camion.cargarUnaCosa(arenaGranel)
+  assert.equals(0, arenaGranel.peso())
+}
+
+test "los residuos radioactivos ganan 15 kilos tras subir al camion" {
+  camion.cargarUnaCosa(residuos)
+  assert.equals(25, residuos.peso())
+}
+
